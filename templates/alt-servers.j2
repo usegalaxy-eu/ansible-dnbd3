@@ -1,0 +1,16 @@
+{% for proxy in dnbd3_poxys %}
+[{{ proxy.ip }}]
+comment={{ proxy.comment }}
+for=client
+{% endfor %}
+
+[{{ dnbd3_primary }}]
+comment={{ dnbd3_primary_comment }}
+for=replication
+
+{% if dnbd3_primary_backup is defined %}
+; dnbd3-s3fs backup service/server
+[{{ dnbd3_primary_backup }}]
+comment={{ dnbd3_primary_backup_comment }}
+for=replication
+{% endif %}

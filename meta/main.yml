@@ -1,0 +1,17 @@
+---
+galaxy_info:
+  author: Mira Kuntz, Marcel Janczyk
+  description: Installs Nginx and configures a DNBD3 server or proxy
+  license: MIT
+  role_name: dnbd3
+  namespace: usegalaxy_eu
+  min_ansible_version: "2.1"
+  platforms:
+  - name: Ubuntu
+    versions:
+      - 22
+      - 24
+  - name: Red Hat
+    versions:
+      - 9
+dependencies: []

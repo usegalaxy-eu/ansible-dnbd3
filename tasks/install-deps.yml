@@ -1,0 +1,31 @@
+---
+- name: Install ansible dependency packages
+  ansible.builtin.yum:
+    state: present
+    enablerepo: crb
+    name:
+      - cmake
+      - fuse-devel
+      - gcc
+      - git
+      - jansson-devel
+      - libatomic
+      - libcurl-devel
+      - make
+      - zlib-devel
+  when: ansible_os_family == 'RedHat'
+- name: Install ansible dependency packages
+  ansible.builtin.apt:
+    update_cache: true
+    state: present
+    name:
+      - cmake
+      - libfuse-dev
+      - gcc
+      - git
+      - libjansson-dev
+      - libatomic1
+      - libcurl4-openssl-dev
+      - make
+      - zlib1g-dev
+  when: ansible_os_family == 'Debian'

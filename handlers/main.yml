@@ -1,0 +1,5 @@
+---
+- name: DNBD3-server service restart
+  ansible.builtin.service:
+    name: dnbd3-server
+    state: restarted

@@ -1,0 +1,13 @@
+[Unit]
+Description=DNBD3-Server
+After=network.target
+Requires=network.target
+
+[Service]
+User=dnbd3
+ExecStart=/usr/local/sbin/dnbd3-server -n -c /usr/local/etc/dnbd3-server
+ExecStop=/bin/kill -15 $MAINPID
+ExecReload=/bin/kill -USR1 $MAINPID
+
+[Install]
+WantedBy=multi-user.target

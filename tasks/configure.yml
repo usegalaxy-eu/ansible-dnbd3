@@ -1,0 +1,84 @@
+---
+- name: Create dependency directories for DNBD3
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+  loop:
+    - "{{ dnbd3_service_dir }}"
+    - "{{ dnbd3_config_dir }}"
+
+- name: Copy systemd DNBD3 service file
+  ansible.builtin.copy:
+    src: dnbd3-server.service
+    dest: "{{ dnbd3_service_file }}"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart dnbd3-server service
+
+- name: Copy systemd srv.mount file
+  ansible.builtin.copy:
+    src: srv.mount
+    dest: "{{ dnbd3_srv_mount_file }}"
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy DNBD3 systemd limits
+  ansible.builtin.copy:
+    src: limits.conf
+    dest: "{{ dnbd3_limits_file }}"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart dnbd3-server service
+
+- name: Deploy DNBD3 server configuration
+  ansible.builtin.template:
+    src: server.conf.j2
+    dest: "{{ dnbd3_server_conf }}"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart dnbd3-server service
+
+- name: Deploy DNBD3 alternative servers configuration
+  ansible.builtin.template:
+    src: alt-servers.j2
+    dest: "{{ dnbd3_alt_servers_conf }}"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart dnbd3-server service
+  when: not dnbd3_proxy
+
+- name: Allow DNBD3 traffic in firewalld on port {{ dnbd3_listen_port }}
+  ansible.posix.firewalld:
+    port: "{{ dnbd3_listen_port }}/tcp"
+    permanent: true
+    state: enabled
+    immediate: true
+  when: ansible_os_family == 'RedHat'
+
+- name: Allow DNBD3 traffic in firewalld on port {{ dnbd3_listen_port }}
+  community.general.ufw:
+    rule: allow
+    proto: tcp
+    port: "{{ dnbd3_listen_port }}"
+    comment: Allow DNBD3
+  when: ansible_os_family == 'Debian'
+
+- name: Start and enable DNBD3 server service
+  ansible.builtin.systemd_service:
+    name: dnbd3-server
+    state: started
+    enabled: true
+
+- name: Enable srv.mount service
+  ansible.builtin.systemd_service:
+    name: srv.mount
+    state: stopped
+    enabled: true

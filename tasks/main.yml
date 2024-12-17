@@ -1,0 +1,7 @@
+---
+- name: Install dependency packages
+  ansible.builtin.include_tasks: install-deps.yml
+- name: Build the DNBD3 server binary
+  ansible.builtin.include_tasks: build.yml
+- name: Configure the DNBD3 server
+  ansible.builtin.include_tasks: configure.yml

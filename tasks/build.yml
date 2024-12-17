@@ -1,0 +1,61 @@
+---
+- name: Checkout DNBD3 Git repository
+  git:
+    repo: "{{ dnbd3_git_repo }}"
+    dest: "{{ dnbd3_src_dir }}"
+    version: "{{ dnbd3_git_tag }}"
+    accept_hostkey: yes
+    recursive: yes
+  register: dnbd3_git_result
+
+- name: Create build directory for DNBD3
+  file:
+    path: "{{ dnbd3_build_dir }}"
+    state: directory
+  when: dnbd3_git_result.changed
+
+- name: Run CMake to configure DNBD3
+  command: >
+    cmake -DCMAKE_BUILD_TYPE=Release -DDNBD3_KERNEL_MODULE=OFF ..
+  args:
+    chdir: "{{ dnbd3_build_dir }}"
+  when: dnbd3_git_result.changed
+
+- name: Compile DNBD3 server binary
+  make:
+    chdir: "{{ dnbd3_build_dir }}"
+    target: dnbd3-server
+  when: dnbd3_git_result.changed
+
+- name: Check if old DNBD3 server binary exists
+  stat:
+    path: "{{ dnbd3_server_binary }}"
+  register: dnbd3_server_exists
+
+- name: Backup old server binary if it exists
+  copy:
+    src: "{{ dnbd3_server_binary }}"
+    dest: "{{ dnbd3_old_binary }}"
+    remote_src: true
+  when: dnbd3_git_result.changed and dnbd3_server_exists.stat.exists
+
+- name: Copy new server binary to temporary location
+  copy:
+    src: "{{ dnbd3_build_dir }}/src/server/dnbd3-server"
+    dest: "{{ dnbd3_new_binary }}"
+    remote_src: true
+  when: dnbd3_git_result.changed
+
+- name: Install DNBD3 server binary (first installation or update)
+  copy:
+    src: "{{ dnbd3_new_binary }}"
+    dest: "{{ dnbd3_server_binary }}"
+    remote_src: true
+    mode: '0755'
+  args:
+    creates: "{{ dnbd3_server_binary }}"
+
+- name: Remove DNBD3 build directory
+  file:
+    path: "{{ dnbd3_build_dir }}"
+    state: absent
