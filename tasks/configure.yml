@@ -19,14 +19,6 @@
     mode: '0644'
   notify: Restart dnbd3-server service
 
-- name: Copy systemd srv.mount file
-  ansible.builtin.copy:
-    src: srv.mount
-    dest: "{{ dnbd3_srv_mount_file }}"
-    owner: root
-    group: root
-    mode: '0644'
-
 - name: Copy DNBD3 systemd limits
   ansible.builtin.copy:
     src: limits.conf
