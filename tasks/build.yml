@@ -52,8 +52,7 @@
     dest: "{{ dnbd3_server_binary }}"
     remote_src: true
     mode: '0755'
-  args:
-    creates: "{{ dnbd3_server_binary }}"
+  notify: DNBD3-server service restart
 
 - name: Remove DNBD3 build directory
   file:
