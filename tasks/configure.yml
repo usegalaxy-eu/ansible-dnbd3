@@ -11,7 +11,7 @@
     - "{{ dnbd3_config_dir }}"
 
 - name: Copy systemd DNBD3 service file
-  ansible.builtin.copy:
+  ansible.builtin.template:
     src: dnbd3-server.service
     dest: "{{ dnbd3_service_file }}"
     owner: root

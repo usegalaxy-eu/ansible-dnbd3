@@ -1,11 +1,11 @@
 # --- dnbd3 setup vars ---
 dnbd3_base_path: "/mnt/s3/dnbd3"
 dnbd3_log_file: "/tmp/dnbd3-server.log"
-dnbd3_config_path: "/usr/local/etc/dnbd3-server"
+dnbd3_config_dir: "/usr/local/etc/dnbd3-server"
 dnbd3_user: "dnbd3"
 dnbd3_group: "dnbd3"
-dnbd3_server_conf: "{{ dnbd3_base_path }}/server.conf"
-dnbd3_alt_servers_conf: "{{ dnbd3_base_path }}/alt-servers"
+dnbd3_server_conf: "{{ dnbd3_config_dir }}/server.conf"
+dnbd3_alt_servers_conf: "{{ dnbd3_config_dir }}/alt-servers"
 # --- dnbd3 repo vars ---
 dnbd3_git_tag: "master"
 dnbd3_git_repo: "git://git.openslx.org/dnbd3.git"

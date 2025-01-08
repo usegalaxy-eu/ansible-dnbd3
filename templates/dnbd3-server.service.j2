@@ -5,7 +5,7 @@ Requires=network.target
 
 [Service]
 User=dnbd3
-ExecStart=/usr/local/sbin/dnbd3-server -n -c /usr/local/etc/dnbd3-server
+ExecStart={{ dnbd3_server_binary }} -n -c {{ dnbd3_config_dir }}
 ExecStop=/bin/kill -15 $MAINPID
 ExecReload=/bin/kill -USR1 $MAINPID
 
