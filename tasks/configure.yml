@@ -17,7 +17,7 @@
     owner: root
     group: root
     mode: '0644'
-  notify: Restart dnbd3-server service
+  notify: Restart DNBD3-server
 
 - name: Copy DNBD3 systemd limits
   ansible.builtin.copy:
@@ -26,7 +26,7 @@
     owner: root
     group: root
     mode: '0644'
-  notify: Restart dnbd3-server service
+  notify: Restart DNBD3-server
 
 - name: Deploy DNBD3 server configuration
   ansible.builtin.template:
@@ -35,7 +35,7 @@
     owner: root
     group: root
     mode: '0644'
-  notify: Restart dnbd3-server service
+  notify: Restart DNBD3-server
 
 - name: Deploy DNBD3 alternative servers configuration
   ansible.builtin.template:
@@ -44,7 +44,7 @@
     owner: root
     group: root
     mode: '0644'
-  notify: Restart dnbd3-server service
+  notify: Restart DNBD3-server
   when: not dnbd3_is_proxy
 
 - name: Allow DNBD3 traffic in firewalld on port {{ dnbd3_listen_port }}

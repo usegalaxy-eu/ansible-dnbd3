@@ -52,7 +52,7 @@
     dest: "{{ dnbd3_server_binary }}"
     remote_src: true
     mode: '0755'
-  notify: DNBD3-server service restart
+  notify: Restart DNBD3-server
 
 - name: Remove DNBD3 build directory
   file:
