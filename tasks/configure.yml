@@ -76,9 +76,3 @@
     name: dnbd3-server
     state: started
     enabled: true
-
-- name: Enable srv.mount service
-  ansible.builtin.systemd_service:
-    name: srv.mount
-    state: stopped
-    enabled: true
