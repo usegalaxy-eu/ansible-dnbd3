@@ -3,3 +3,4 @@
   ansible.builtin.service:
     name: dnbd3-server
     state: restarted
+  listen: "restart dnbd3_server"
