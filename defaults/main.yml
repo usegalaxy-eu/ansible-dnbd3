@@ -1,6 +1,5 @@
 # --- dnbd3 setup vars ---
 dnbd3_base_path: "/mnt/s3/dnbd3"
-dnbd3_log_file: "/tmp/dnbd3-server.log"
 dnbd3_config_dir: "/usr/local/etc/dnbd3-server"
 dnbd3_user: "dnbd3"
 dnbd3_group: "dnbd3"
