@@ -45,7 +45,6 @@
     group: root
     mode: '0644'
   notify: "restart dnbd3_server"
-  when: not dnbd3_is_proxy
 
 - name: Allow DNBD3 traffic in firewalld on port {{ dnbd3_listen_port }}
   ansible.posix.firewalld:
