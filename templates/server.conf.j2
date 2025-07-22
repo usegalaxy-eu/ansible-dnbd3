@@ -71,7 +71,10 @@ maxPrefetch=256k
 ; log file path and name
 ; comment out to disable logging to file
 ; protip: use SIGUSR2 to reopen log file
+{% if dnbd3_log_file is defined %}
 file={{ dnbd3_log_file }}
+{% endif %}
+
 
 ; which type of messages to log to file
 fileMask=ERROR WARNING MINOR INFO DEBUG1
